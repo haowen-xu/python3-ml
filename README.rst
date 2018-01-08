@@ -8,7 +8,7 @@ Major Packages
 
 * Python 3.6
 * TensorFlow 1.5.0rc0
-* CUDA 9.1 + CUDNN 7
+* CUDA 9.0 + CUDNN 7
 * `ZhuSuan <https://github.com/thu-ml/zhusuan>`_, `TFSnippet <https://github.com/korepwx/tfsnippet>`_
   and `MLToolkit <https://github.com/korepwx/mltoolkit>`_
 
