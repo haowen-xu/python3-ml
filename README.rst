@@ -21,6 +21,6 @@ Installation
 .. code-block:: bash
 
     # build the cpu image
-    docker build -t ipwx/python3-ml:cpu cpu
+    docker build --build-arg UBUNTU_MIRROR=archive.ubuntu.com -t ipwx/python3-ml:cpu cpu
     # build the gpu image
-    docker build -t ipwx/python3-ml:gpu gpu
+    docker build --build-arg UBUNTU_MIRROR=archive.ubuntu.com -t ipwx/python3-ml:gpu gpu

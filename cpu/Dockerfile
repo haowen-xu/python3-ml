@@ -2,15 +2,17 @@ FROM ubuntu:16.04
 
 MAINTAINER Haowen Xu <public@korepwx.com>
 
+ARG UBUNTU_MIRROR=archive.ubuntu.com
+ARG TZ=Asia/Shanghai
+
 ENV LANG=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
-ENV TZ=Asia/Shanghai
 ENV DEBIAN_FRONTEND=noninteractive
-
 ENV PATH="/miniconda/bin:${PATH}"
 
 
 RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
+    sed -i "s/archive.ubuntu.com/${UBUNTU_MIRROR}/g" /etc/apt/sources.list && \
     apt-get update && apt-get -y dist-upgrade && \
     apt-get install -y --no-install-recommends apt-utils && \
     apt-get install -y --no-install-recommends \

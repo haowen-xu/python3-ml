@@ -2,15 +2,17 @@ FROM nvidia/cuda:8.0-cudnn6-devel-ubuntu16.04
 
 MAINTAINER Haowen Xu <public@korepwx.com>
 
+ARG UBUNTU_MIRROR=archive.ubuntu.com
+ARG TZ=Asia/Shanghai
+
 ENV LANG=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
-ENV TZ=Asia/Shanghai
 ENV DEBIAN_FRONTEND=noninteractive
-
 ENV PATH="/miniconda/bin:${PATH}"
 ENV LD_LIBRARY_PATH="/usr/local/nvidia/lib64:/usr/local/nvidia/lib:/usr/local/cuda/lib64:/usr/local/cuda/lib:${LD_LIBRARY_PATH}"
 
 RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
+    sed -i "s/archive.ubuntu.com/${UBUNTU_MIRROR}/g" /etc/apt/sources.list && \
     apt-get update && apt-get -y dist-upgrade && \
     apt-get install -y --no-install-recommends apt-utils && \
     apt-get install -y --no-install-recommends \
