@@ -39,8 +39,10 @@ RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timez
     conda info -a && \
     conda install --yes -q python=3.5 && \
     python -m pip install numpy scipy pandas tables scikit-learn matplotlib ipython[all] \
-        tensorflow-gpu
+        tensorflow-gpu==1.5.0rc0
 
+# Force invalidate the cache layer
+ARG CACHEBUST=1
 RUN python -m pip install \
         git+https://github.com/thu-ml/zhusuan.git \
         git+https://github.com/korepwx/tfsnippet.git \
