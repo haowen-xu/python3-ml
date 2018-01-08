@@ -39,7 +39,7 @@ RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timez
     conda info -a && \
     conda install --yes -q python=3.5 && \
     python -m pip install numpy scipy pandas tables scikit-learn matplotlib ipython[all] \
-        tensorflow{% if gpu %}-gpu{% endif %}
+        tensorflow{% if gpu %}-gpu==1.5.0rc0{% endif %}
 
 RUN python -m pip install \
         git+https://github.com/thu-ml/zhusuan.git \
