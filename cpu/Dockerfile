@@ -7,15 +7,16 @@ ARG TZ=Asia/Shanghai
 
 ENV LANG=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
-ENV DEBIAN_FRONTEND=noninteractive
 ENV PATH="/miniconda/bin:${PATH}"
 
 
 RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
+    chsh -s /bin/bash && \
     sed -i "s/archive.ubuntu.com/${UBUNTU_MIRROR}/g" /etc/apt/sources.list && \
-    apt-get update && apt-get -y dist-upgrade && \
-    apt-get install -y --no-install-recommends apt-utils && \
-    apt-get install -y --no-install-recommends \
+    DEBIAN_FRONTEND=noninteractive apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-utils && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         build-essential \
         ca-certificates \
         wget \
