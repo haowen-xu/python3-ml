@@ -8,6 +8,7 @@ ARG TZ=Asia/Shanghai
 ENV LANG=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
 ENV PATH="/miniconda/bin:${PATH}"
+ENV SHELL=/bin/bash
 {% if gpu %}ENV LD_LIBRARY_PATH="/usr/local/nvidia/lib64:/usr/local/nvidia/lib:/usr/local/cuda/lib64:/usr/local/cuda/lib:${LD_LIBRARY_PATH}"{% endif %}
 
 RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
@@ -37,7 +38,7 @@ RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timez
     conda config --set always_yes yes --set changeps1 no && \
     conda update --yes -q conda && \
     conda info -a && \
-    conda install --yes -q python=3.5 && \
+    conda install --yes -q python=3.6 && \
     python -m pip install numpy scipy pandas tables scikit-learn matplotlib ipython[all] \
         tensorflow{% if gpu %}-gpu{% endif %}==1.5.0rc0
 
