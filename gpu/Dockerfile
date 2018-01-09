@@ -42,6 +42,10 @@ RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timez
     python -m pip install numpy scipy pandas tables scikit-learn matplotlib ipython[all] \
         tensorflow-gpu==1.5.0rc0
 
+# Install Jupyterlab
+RUN pip install jupyterlab && \
+    jupyter serverextension enable --py jupyterlab --sys-prefix
+
 # Force invalidate the cache layer
 ARG CACHEBUST=1
 RUN python -m pip install \
