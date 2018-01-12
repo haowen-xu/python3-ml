@@ -39,7 +39,7 @@ RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timez
     conda update --yes -q conda && \
     conda info -a && \
     conda install --yes -q python=3.6 && \
-    python -m pip install numpy scipy pandas tables scikit-learn matplotlib ipython[all] \
+    python -m pip install numpy scipy sympy pandas tables scikit-learn matplotlib ipython[all] \
         tensorflow{% if gpu %}-gpu{% endif %}==1.5.0rc0
 
 # Install Jupyterlab
