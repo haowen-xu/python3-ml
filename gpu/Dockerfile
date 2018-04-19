@@ -51,9 +51,12 @@ RUN pip install jupyterlab && \
 
 # Force invalidate the cache layer
 ARG CACHEBUST=1
+
+# install other frequently updated libraries
 RUN python -m pip install \
         git+https://github.com/thu-ml/zhusuan.git \
         git+https://github.com/korepwx/tfsnippet.git \
-        git+https://github.com/korepwx/mltoolkit.git
+        git+https://github.com/korepwx/mltoolkit.git \
+        git+https://github.com/facebookresearch/visdom.git
 
 CMD ["/bin/bash"]
