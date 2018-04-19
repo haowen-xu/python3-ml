@@ -39,8 +39,10 @@ RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timez
     conda update --yes -q conda && \
     conda info -a && \
     conda install --yes -q python=3.6 && \
+    conda install pytorch torchvision cuda90 -c pytorch && \
     python -m pip install numpy scipy sympy pandas tables scikit-learn matplotlib ipython[all] \
-        seaborn pillow \
+        seaborn pillow PyYAML sqlalchemy pymongo jinja2 \
+        sacred sacredboard mako GitPython tinydb tinydb-serialization hashfs \
         tensorflow{% if gpu %}-gpu{% endif %}==1.6.0
 
 # Install Jupyterlab
