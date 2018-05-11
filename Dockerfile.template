@@ -7,7 +7,6 @@ ARG TZ=Asia/Shanghai
 
 ENV LANG=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
-ENV PATH="/miniconda/bin:${PATH}"
 ENV SHELL=/bin/bash
 {% if gpu %}ENV LD_LIBRARY_PATH="/usr/local/nvidia/lib64:/usr/local/nvidia/lib:/usr/local/cuda/lib64:/usr/local/cuda/lib:${LD_LIBRARY_PATH}"{% endif %}
 
@@ -27,30 +26,28 @@ RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timez
         language-pack-en \
         tzdata \
         ssh \
+        python3 python3-dev python3-pip \
     && \
+    ln -sf /usr/bin/python3 /usr/bin/python && \
+    ln -sf /usr/bin/pip3 /usr/bin/pip && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh \
-            -O /tmp/miniconda.sh \
-            && \
-    /bin/bash /tmp/miniconda.sh -b -p /miniconda && \
-    rm /tmp/miniconda.sh && \
-    conda config --set always_yes yes --set changeps1 no && \
-    conda update --yes -q conda && \
-    conda info -a && \
-    conda install --yes -q python=3.6 && \
-    conda install pytorch torchvision cuda90 -c pytorch && \
-    python -m pip install numpy scipy sympy pandas tables scikit-learn matplotlib ipython[all] \
-        seaborn pillow PyYAML sqlalchemy pymongo jinja2 \
-        sacred sacredboard mako GitPython tinydb tinydb-serialization hashfs \
-        tensorflow{% if gpu %}-gpu{% endif %}==1.6.0
+    rm -rf /var/lib/apt/lists/*
 
-# Install Jupyterlab
-RUN pip install jupyterlab && \
-    jupyter serverextension enable --py jupyterlab --sys-prefix
+RUN python -m pip install --upgrade setuptools pip six && \
+    python -m pip install --upgrade numpy scipy sympy pandas tables scikit-learn matplotlib ipython[all] tqdm \
+        seaborn pillow PyYAML sqlalchemy pymongo jinja2 \
+        sacred sacredboard mako GitPython tinydb tinydb-serialization hashfs && \
+    python -m pip install http://download.pytorch.org/whl/cu90/torch-0.4.0-cp35-cp35m-linux_x86_64.whl torchvision && \
+    python -m pip install tensorflow{% if gpu %}-gpu{% endif %}==1.8.0 
 
 # Force invalidate the cache layer
 ARG CACHEBUST=1
+
+# Install Jupyterlab and other Jupyter extensions
+RUN pip install jupyterlab jupyter_nbextensions_configurator jupyter_contrib_nbextensions && \
+    jupyter contrib nbextension install --sys-prefix && \
+    jupyter nbextensions_configurator enable --sys-prefix && \
+    jupyter serverextension enable --py jupyterlab --sys-prefix
 
 # install other frequently updated libraries
 RUN python -m pip install \
