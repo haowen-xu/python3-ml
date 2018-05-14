@@ -35,7 +35,7 @@ RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timez
 
 RUN python -m pip install --upgrade setuptools pip six && \
     python -m pip install --upgrade numpy scipy sympy pandas tables scikit-learn matplotlib ipython[all] tqdm \
-        seaborn pillow PyYAML sqlalchemy pymongo jinja2 \
+        seaborn pillow PyYAML sqlalchemy pymongo jinja2 scikit-image scipy progressbar2 mock pep8 coverage \
         sacred sacredboard mako GitPython tinydb tinydb-serialization hashfs && \
     python -m pip install http://download.pytorch.org/whl/cu90/torch-0.4.0-cp35-cp35m-linux_x86_64.whl torchvision && \
     python -m pip install tensorflow-gpu==1.8.0 
