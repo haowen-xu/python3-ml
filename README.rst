@@ -6,8 +6,8 @@ This is a Ubuntu 16.04 Docker image for Python 3 machine learning environment.
 Major Packages
 --------------
 
-* Python 3.6
-* TensorFlow 1.6.0
+* Python 3.5
+* TensorFlow 1.8.0
 * CUDA 9.0 + CUDNN 7
 * `ZhuSuan <https://github.com/thu-ml/zhusuan>`_, `TFSnippet <https://github.com/korepwx/tfsnippet>`_
   and `MLToolkit <https://github.com/korepwx/mltoolkit>`_
