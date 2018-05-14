@@ -8,6 +8,7 @@ ARG TZ=Asia/Shanghai
 ENV LANG=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
 ENV SHELL=/bin/bash
+ENV PIP_DEFAULT_TIMEOUT=120
 ENV LD_LIBRARY_PATH="/usr/local/nvidia/lib64:/usr/local/nvidia/lib:/usr/local/cuda/lib64:/usr/local/cuda/lib:${LD_LIBRARY_PATH}"
 
 RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
@@ -33,7 +34,9 @@ RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timez
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN python -m pip install --upgrade setuptools pip six && \
+RUN python --version && \
+    python -m pip --version && \
+    python -m pip install --upgrade setuptools pip six && \
     python -m pip install --upgrade numpy scipy sympy pandas tables scikit-learn matplotlib ipython[all] tqdm \
         seaborn pillow PyYAML sqlalchemy pymongo jinja2 scikit-image scipy progressbar2 mock pep8 coverage \
         sacred sacredboard mako GitPython tinydb tinydb-serialization hashfs && \
