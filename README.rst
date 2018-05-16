@@ -21,7 +21,6 @@ To populate the Dockerfiles of both variants, execute the following command::
     pip install jinja2
     python Dockerfile.py
 
-
 Installation
 ------------
 
