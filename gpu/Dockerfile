@@ -32,7 +32,7 @@ RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timez
     && \
     ln -sf /usr/bin/python3 /usr/bin/python && \
     ln -sf /usr/bin/pip3 /usr/bin/pip && \
-    mkdir -p /var/run/sshd && chmod 0700 /var/run/sshd \
+    mkdir -p /var/run/sshd && chmod 0700 /var/run/sshd && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
