@@ -28,9 +28,11 @@ RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timez
         tzdata \
         ssh \
         python3 python3-dev python3-pip \
+        openssh-server \
     && \
     ln -sf /usr/bin/python3 /usr/bin/python && \
     ln -sf /usr/bin/pip3 /usr/bin/pip && \
+    mkdir /var/run/sshd && chmod 0700 /var/run/sshd \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
