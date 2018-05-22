@@ -1,0 +1,17 @@
+language: python
+sudo: required
+services:
+- docker
+env:
+  matrix:
+  - TAG=cpu
+  - TAG=gpu
+  global:
+  - secure: NTAwAl53Aq0atF/3HqbQLZtC8Jud5BOedaui1vBz2b/g179n0DLkckTtNGzggG/gDILpo68oyo/awdsw9CjOZHRJILg7/u02TLy04DCntmGfOfulfbFaY1EZlf4reiRxq7KC54deTK96CtFLM7OWWdiL5RcPpwqf0U8Z9C4sVgHhgqW/bviTJlJs0+/FWcGaBhwyXyu2DX7uTVtM5xpBlPpOHjdjX4v11rKzlNWiS+ETmZZNitVxYWwn6GUv55Xr7Jh/R/aHxLTdVbPPi2fCRxT0uoAAmr0Fdz0TrSkAC80Jjo5WLqwQbJYPz/PPXjX/UExvkCQPH0yIrMxgyUwFrkSZkKdv9MbmwUavmd+KymHTTLkJvV910fQyDMcr4ervH4a0QXao6C6hCFKksXzwM3ueCnA63VZgGO3G9G+RfhGcbOHppgGwAEqO+4PE5kkHlALh9VyFAeTFg6w2Lm/MjypX6yJd1hKP+RTm49bLhVFTrTYkBsXUYKTCxmWCG4fEXExmyUPughAE7S6ncFQvJ19Hg67HozEm+PMlCAfwXKffU6sVuqsIf7wOAqpOT1gmL7AAW7dBgdvwgZrXO07QIyJJBpxNnh4DxRvaasBVVYexsifR71adniWzc8GGedCXAkSzUuFnp4ZPOXTXKTD4nbTrupAf+atg7ncf91EHDtU=
+  - secure: KS85Rbvu7uU8vw0+Vh40YMHCngdF+4BvvSuW6LdZs47uRXGVBfsoMhAc+8yXmfFy4MtgTXdfco0DnEahFM9Srt7YxQ9b1o4eULZF0JCiaeTiXE5pKcYrsofrw5FyT+ucOZkf6ZTVAIhq0tbjEc7sKOKZVrPMkPNivguqEZqChVpVXJ+399qdLN1sfaCRo5WJzwMpEhnlyW84EbWq/e0cymdykRwnSBA3uBD4Y6z4pBpTQ7OlYANtmRw6Hbr0I4ZX2Tpiy4KV92ZBekR1jq6nT/kkVwaWiEsc6/sTN+IdFM45rIeDMC3XH9BaQ/d4JIYVYSfsTBXcFH5IQHoWeOvyHbwdMxtbYRp3Q/6U0zkjGp4L5/x8iuXi43krY8T+f7eXr5W240e5tIRtMm4924EVsS9xwCiekKl2j2liwKevfpZKTTj7YPVTiKuJl3CgaVexNoT2nO0j2/SdWpOGMIeeGuUZsua+Ehoc0Vyh9QFJPFcLTU7/uQm5RDCNmLC7avz0QHSqDzG6eiVp6g9nZLcGksQbDYN9vRrYBAOXsJdQzxtImjIeIrKnQclBuI6R2lBIw2hdoWFhImFlp8+C2LtvZsGXRUpajUlPGDH7n/35jAC6MVyvMaWL3c3XvZ1TPomRp5+q7dgz79H+713SLLO3Rg5lprAOREqnT21CXcgxqa4=
+install:
+- export REPO="haowenxu/python3-ml"
+- docker build -t "${REPO}:${TAG}" "${TAG}"
+script:
+- docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}"
+- docker push "${REPO}:${TAG}"
