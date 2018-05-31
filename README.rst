@@ -33,6 +33,7 @@ Installation
     # build the cpu image
     docker build \
         --build-arg UBUNTU_MIRROR=archive.ubuntu.com \
+        --build-arg CRAN_MIRROR=https://cloud.r-project.org \
         --build-arg CACHEBUST="$(date +%s)" \
         -t ipwx/python3-ml:cpu \
         cpu
@@ -40,6 +41,7 @@ Installation
     # build the gpu image
     docker build \
         --build-arg UBUNTU_MIRROR=archive.ubuntu.com \
+        --build-arg CRAN_MIRROR=https://cloud.r-project.org \
         --build-arg CACHEBUST="$(date +%s)" \
         -t ipwx/python3-ml:gpu \
         gpu
