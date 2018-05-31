@@ -19,7 +19,7 @@ RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timez
     DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends software-properties-common apt-utils lsb-release gnupg apt-transport-https libcurl4-openssl-dev libnlopt-dev gnupg dirmngr && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
-    add-apt-repository 'deb [arch=amd64,i386] ${CRAN_MIRROR}/bin/linux/ubuntu xenial/'
+    add-apt-repository 'deb [arch=amd64,i386] ${CRAN_MIRROR}/bin/linux/ubuntu xenial/' && \
     DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         build-essential \
