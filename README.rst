@@ -1,6 +1,9 @@
 Python3 Machine Learning Environment
 ====================================
 
+.. image:: https://travis-ci.org/haowen-xu/python3-ml.svg?branch=master
+    :target: https://travis-ci.org/haowen-xu/python3-ml
+
 This is a Ubuntu 16.04 Docker image for Python 3 machine learning environment.
 
 Major Packages
