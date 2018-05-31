@@ -28,11 +28,14 @@ RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timez
         tzdata \
         ssh \
         python3 python3-dev python3-pip \
-        openssh-server \
+	mercurial\
+	libcairo-dev \
+	libedit-dev \
+	r-base \
+	r-base-dev \
     && \
     ln -sf /usr/bin/python3 /usr/bin/python && \
     ln -sf /usr/bin/pip3 /usr/bin/pip && \
-    mkdir -p /var/run/sshd && chmod 0700 /var/run/sshd && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -44,6 +47,24 @@ RUN python --version && \
         sacred sacredboard mako GitPython tinydb tinydb-serialization hashfs && \
     python -m pip install http://download.pytorch.org/whl/cu90/torch-0.4.0-cp35-cp35m-linux_x86_64.whl torchvision && \
     python -m pip install tensorflow-gpu==1.8.0 
+
+RUN \
+  echo "broom\n\
+        DBI\n\
+        dbplyr\n\
+        dplyr\n\
+        hexbin\n\
+        ggplot2\n\
+        lme4\n\
+        RSQLite\n\
+        tidyr" > rpacks.txt && \
+  R -e 'install.packages(sub("(.+)\\\\n","\\1", scan("rpacks.txt", "character")), repos="'"${CRAN_MIRROR}"'")' && \
+  rm rpacks.txt
+
+RUN \
+  python3 -m pip install --no-cache-dir \
+       https://bitbucket.org/rpy2/rpy2/get/version_2.9.x.tar.gz && \
+  rm -rf /root/.cache
 
 # Force invalidate the cache layer
 ARG CACHEBUST=1
