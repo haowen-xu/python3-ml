@@ -3,7 +3,7 @@ FROM nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
 MAINTAINER Haowen Xu <public@korepwx.com>
 
 ARG UBUNTU_MIRROR=archive.ubuntu.com
-ARG CRAN_MIRROR=https://cloud.r-project.org
+ARG CRAN_MIRROR=https://cran.rstudio.com
 ARG TZ=Asia/Shanghai
 
 ENV LANG=en_US.UTF-8
@@ -17,10 +17,9 @@ RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timez
     sed -i "s/archive.ubuntu.com/${UBUNTU_MIRROR}/g" /etc/apt/sources.list && \
     DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-utils lsb-release gnupg apt-transport-https libcurl4-openssl-dev libnlopt-dev gnupg dirmngr && \
-    echo "deb ${CRAN_MIRROR}/bin/linux/ubuntu $(lsb_release -c -s)/" \
-        >> /etc/apt/sources.list.d/r_repos.list && \
-    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9 && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends software-properties-common apt-utils lsb-release gnupg apt-transport-https libcurl4-openssl-dev libnlopt-dev gnupg dirmngr && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
+    add-apt-repository 'deb [arch=amd64,i386] ${CRAN_MIRROR}/bin/linux/ubuntu xenial/'
     DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         build-essential \
