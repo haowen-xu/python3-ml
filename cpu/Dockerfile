@@ -17,7 +17,7 @@ RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timez
     sed -i "s/archive.ubuntu.com/${UBUNTU_MIRROR}/g" /etc/apt/sources.list && \
     DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-utils lsb-release && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-utils lsb-release apt-transport-https libcurl4-openssl-dev libnlopt-dev gnupg dirmngr && \
     echo "deb ${CRAN_MIRROR}/bin/linux/ubuntu $(lsb_release -c -s)/" \
         >> /etc/apt/sources.list.d/r_repos.list && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9 && \
