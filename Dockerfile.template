@@ -55,7 +55,7 @@ RUN python --version && \
     python -m pip --version && \
     python -m pip install --no-cache-dir --upgrade setuptools pip six && \
     python -m pip install --no-cache-dir --upgrade numpy scipy sympy pandas tables scikit-learn matplotlib ipython[all] tqdm \
-        seaborn pillow PyYAML sqlalchemy pymongo jinja2 scikit-image scipy progressbar2 mock pep8 coverage \
+        seaborn pillow imageio PyYAML sqlalchemy pymongo jinja2 scikit-image scipy progressbar2 mock pep8 coverage \
         sacred sacredboard mako GitPython tinydb tinydb-serialization hashfs && \
     python -m pip install --no-cache-dir http://download.pytorch.org/whl/cu90/torch-0.4.0-cp35-cp35m-linux_x86_64.whl torchvision && \
     python -m pip install --no-cache-dir tensorflow{% if gpu %}-gpu{% endif %}==1.8.0 && \
