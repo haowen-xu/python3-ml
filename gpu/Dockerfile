@@ -3,6 +3,7 @@ FROM nvidia/cuda:9.2-cudnn7-devel-ubuntu16.04
 MAINTAINER Haowen Xu <public@korepwx.com>
 
 ARG UBUNTU_MIRROR=archive.ubuntu.com
+ARG CRAN_MIRROR=https://cloud.r-project.org
 ARG TZ=Asia/Shanghai
 
 ENV LANG=en_US.UTF-8
@@ -16,34 +17,63 @@ RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timez
     sed -i "s/archive.ubuntu.com/${UBUNTU_MIRROR}/g" /etc/apt/sources.list && \
     DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends apt-utils && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        apt-utils \
+        apt-transport-https \
+        lsb-release \
+        libcurl4-openssl-dev \
+        libnlopt-dev \
+        gnupg \
+        dirmngr \
+        software-properties-common \
+    && \
+    add-apt-repository "deb ${CRAN_MIRROR}/bin/linux/ubuntu $(lsb_release -c -s)/" && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9 && \
+    DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         build-essential \
         ca-certificates \
         wget \
         git \
+        mercurial \
         vim \
         locales \
         language-pack-en \
         tzdata \
         ssh \
+        libcairo-dev \
+        libedit-dev \
         python3 python3-dev python3-pip \
-        openssh-server \
+        r-base r-base-dev \
     && \
     ln -sf /usr/bin/python3 /usr/bin/python && \
     ln -sf /usr/bin/pip3 /usr/bin/pip && \
-    mkdir -p /var/run/sshd && chmod 0700 /var/run/sshd && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 RUN python --version && \
     python -m pip --version && \
-    python -m pip install --upgrade setuptools pip six && \
-    python -m pip install --upgrade numpy scipy sympy pandas tables scikit-learn matplotlib ipython[all] tqdm \
-        seaborn pillow PyYAML sqlalchemy pymongo jinja2 scikit-image scipy progressbar2 mock pep8 coverage \
+    python -m pip install --no-cache-dir --upgrade setuptools pip six && \
+    python -m pip install --no-cache-dir --upgrade numpy scipy sympy pandas tables scikit-learn matplotlib ipython[all] tqdm \
+        seaborn pillow imageio PyYAML sqlalchemy pymongo jinja2 scikit-image scipy progressbar2 mock pep8 coverage \
         sacred sacredboard mako GitPython tinydb tinydb-serialization hashfs && \
-    python -m pip install http://download.pytorch.org/whl/cu90/torch-0.4.0-cp35-cp35m-linux_x86_64.whl torchvision && \
-    python -m pip install tensorflow-gpu==1.8.0 
+    python -m pip install --no-cache-dir http://download.pytorch.org/whl/cu90/torch-0.4.0-cp35-cp35m-linux_x86_64.whl torchvision && \
+    python -m pip install --no-cache-dir tensorflow-gpu==1.8.0 && \
+    python -m pip install --no-cache-dir rpy2 && \
+    rm -rf /root/.cache
+
+RUN R --version && \
+    echo "broom\n\
+        DBI\n\
+        dbplyr\n\
+        dplyr\n\
+        hexbin\n\
+        ggplot2\n\
+        lme4\n\
+        RSQLite\n\
+        tidyr" > /tmp/rpacks.txt && \
+    R -e 'install.packages(sub("(.+)\\\\n","\\1", scan("/tmp/rpacks.txt", "character")), repos="'"${CRAN_MIRROR}"'")' && \
+    rm /tmp/rpacks.txt
 
 # Force invalidate the cache layer
 ARG CACHEBUST=1
