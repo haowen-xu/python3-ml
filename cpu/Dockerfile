@@ -14,13 +14,13 @@ ENV PIP_DEFAULT_TIMEOUT=120
 
 
 # lock the versions of cuda and libcudnn, such that TensorFlow + cudnn can work properly
-RUN apt-mark hold cuda* libcudnn*
+RUN apt-get -y update && apt-mark hold cuda* libcudnn*
 
 # do configuration and update packages
 RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
     chsh -s /bin/bash && \
     sed -i "s/archive.ubuntu.com/${UBUNTU_MIRROR}/g" /etc/apt/sources.list && \
-    DEBIAN_FRONTEND=noninteractive apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get -y update && \
     DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         apt-utils \
