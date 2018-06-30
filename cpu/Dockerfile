@@ -13,8 +13,6 @@ ENV SHELL=/bin/bash
 ENV PIP_DEFAULT_TIMEOUT=120
 
 
-# lock the versions of cuda and libcudnn, such that TensorFlow + cudnn can work properly
-RUN apt-get -y update && apt-mark hold cuda* libcudnn*
 
 # do configuration and update packages
 RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \

@@ -11,10 +11,12 @@ ENV LANG=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
 ENV SHELL=/bin/bash
 ENV PIP_DEFAULT_TIMEOUT=120
-ENV LD_LIBRARY_PATH="/usr/local/nvidia/lib64:/usr/local/nvidia/lib:/usr/local/cuda/lib64:/usr/local/cuda/lib:${LD_LIBRARY_PATH}"
 
-# lock the versions of cuda and libcudnn, such that TensorFlow + cudnn can work properly
+
+ENV LD_LIBRARY_PATH="/usr/local/nvidia/lib64:/usr/local/nvidia/lib:/usr/local/cuda/lib64:/usr/local/cuda/lib:${LD_LIBRARY_PATH}"
+  # lock the versions of cuda and libcudnn, such that TensorFlow + cudnn can work properly
 RUN apt-get -y update && apt-mark hold cuda* libcudnn*
+
 
 # do configuration and update packages
 RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
