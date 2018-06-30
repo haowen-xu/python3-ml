@@ -16,6 +16,7 @@ ENV PIP_DEFAULT_TIMEOUT=120
 RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
     chsh -s /bin/bash && \
     sed -i "s/archive.ubuntu.com/${UBUNTU_MIRROR}/g" /etc/apt/sources.list && \
+    DEBIAN_FRONTEND=noninteractive apt-mark hold cuda* libcudnn* && \  # essential for TensorFlow + cudnn to work properly
     DEBIAN_FRONTEND=noninteractive apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
