@@ -4,18 +4,25 @@ MAINTAINER Haowen Xu <public@korepwx.com>
 
 ARG UBUNTU_MIRROR=archive.ubuntu.com
 ARG CRAN_MIRROR=https://cloud.r-project.org
+ARG PIP_OPTS=
 ARG TZ=Asia/Shanghai
 
 ENV LANG=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
 ENV SHELL=/bin/bash
 ENV PIP_DEFAULT_TIMEOUT=120
-ENV LD_LIBRARY_PATH="/usr/local/nvidia/lib64:/usr/local/nvidia/lib:/usr/local/cuda/lib64:/usr/local/cuda/lib:${LD_LIBRARY_PATH}"
 
+
+ENV LD_LIBRARY_PATH="/usr/local/nvidia/lib64:/usr/local/nvidia/lib:/usr/local/cuda/lib64:/usr/local/cuda/lib:${LD_LIBRARY_PATH}"
+  # lock the versions of cuda and libcudnn, such that TensorFlow + cudnn can work properly
+RUN apt-get -y update && apt-mark hold cuda* libcudnn*
+
+
+# do configuration and update packages
 RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
     chsh -s /bin/bash && \
     sed -i "s/archive.ubuntu.com/${UBUNTU_MIRROR}/g" /etc/apt/sources.list && \
-    DEBIAN_FRONTEND=noninteractive apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get -y update && \
     DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         apt-utils \
@@ -53,13 +60,13 @@ RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timez
 
 RUN python --version && \
     python -m pip --version && \
-    python -m pip install --no-cache-dir --upgrade setuptools pip six && \
-    python -m pip install --no-cache-dir --upgrade numpy scipy sympy pandas tables scikit-learn matplotlib==2.0.2 ipython[all] tqdm \
+    python -m pip install ${PIP_OPTS} --no-cache-dir --upgrade setuptools pip six && \
+    python -m pip install ${PIP_OPTS} --no-cache-dir --upgrade numpy scipy sympy pandas tables scikit-learn matplotlib==2.0.2 ipython[all] tqdm \
         seaborn pillow imageio PyYAML sqlalchemy pymongo jinja2 scikit-image scipy progressbar2 mock pep8 coverage \
         sacred sacredboard mako GitPython tinydb tinydb-serialization hashfs && \
-    python -m pip install --no-cache-dir http://download.pytorch.org/whl/cu90/torch-0.4.0-cp35-cp35m-linux_x86_64.whl torchvision && \
-    python -m pip install --no-cache-dir tensorflow-gpu==1.8.0 && \
-    python -m pip install --no-cache-dir rpy2 && \
+    python -m pip install ${PIP_OPTS} --no-cache-dir http://download.pytorch.org/whl/cu90/torch-0.4.0-cp35-cp35m-linux_x86_64.whl torchvision && \
+    python -m pip install ${PIP_OPTS} --no-cache-dir tensorflow-gpu==1.8.0 && \
+    python -m pip install ${PIP_OPTS} --no-cache-dir rpy2 && \
     rm -rf /root/.cache
 
 RUN R --version && \
@@ -79,13 +86,13 @@ RUN R --version && \
 ARG CACHEBUST=1
 
 # Install Jupyterlab and other Jupyter extensions
-RUN pip install jupyterlab jupyter_nbextensions_configurator jupyter_contrib_nbextensions && \
+RUN pip install ${PIP_OPTS} jupyterlab jupyter_nbextensions_configurator jupyter_contrib_nbextensions && \
     jupyter contrib nbextension install --sys-prefix && \
     jupyter nbextensions_configurator enable --sys-prefix && \
     jupyter serverextension enable --py jupyterlab --sys-prefix
 
 # install other frequently updated libraries
-RUN python -m pip install \
+RUN python -m pip install ${PIP_OPTS} \
         git+https://github.com/thu-ml/zhusuan.git \
         git+https://github.com/korepwx/tfsnippet.git \
         git+https://github.com/korepwx/mltoolkit.git \
