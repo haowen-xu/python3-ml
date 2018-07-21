@@ -17,6 +17,7 @@ ENV PIP_DEFAULT_TIMEOUT=120
 # do configuration and update packages
 RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
     chsh -s /bin/bash && \
+    mkdir -p /var/run/sshd && \
     sed -i "s/archive.ubuntu.com/${UBUNTU_MIRROR}/g" /etc/apt/sources.list && \
     DEBIAN_FRONTEND=noninteractive apt-get -y update && \
     DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade && \
@@ -59,7 +60,7 @@ RUN python --version && \
     python -m pip install ${PIP_OPTS} --no-cache-dir --upgrade setuptools pip six && \
     python -m pip install ${PIP_OPTS} --no-cache-dir --upgrade numpy scipy sympy pandas tables scikit-learn matplotlib==2.0.2 ipython[all] tqdm \
         seaborn pillow imageio PyYAML sqlalchemy pymongo jinja2 scikit-image scipy progressbar2 mock pep8 coverage \
-        sacred sacredboard mako GitPython tinydb tinydb-serialization hashfs && \
+        mako GitPython tinydb tinydb-serialization hashfs && \
     python -m pip install ${PIP_OPTS} --no-cache-dir http://download.pytorch.org/whl/cu90/torch-0.4.0-cp35-cp35m-linux_x86_64.whl torchvision && \
     python -m pip install ${PIP_OPTS} --no-cache-dir tensorflow==1.8.0 && \
     python -m pip install ${PIP_OPTS} --no-cache-dir rpy2 && \
