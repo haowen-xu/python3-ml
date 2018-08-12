@@ -61,6 +61,8 @@ RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timez
         ./configure --enable-optimizations && \
         make -j8 && \
         make install && \
+        rm /tmp/Python-${PYTHON_VERSION}.tgz && \
+        rm -rf /tmp/Python-${PYTHON_VERSION} && \
     ln -sf /usr/local/bin/python3.6 /usr/bin/python && \
     ln -sf /usr/local/bin/pip3.6 /usr/bin/pip && \
     apt-get clean && \
