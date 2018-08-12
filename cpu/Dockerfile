@@ -74,8 +74,8 @@ RUN python --version && \
     python -m pip install ${PIP_OPTS} --no-cache-dir --upgrade numpy scipy sympy pandas tables scikit-learn matplotlib==2.0.2 ipython[all] tqdm \
         seaborn pillow imageio PyYAML sqlalchemy pymongo jinja2 scikit-image scipy progressbar2 mock pep8 coverage \
         mako GitPython tinydb tinydb-serialization hashfs && \
-    python -m pip install ${PIP_OPTS} --no-cache-dir http://download.pytorch.org/whl/cu90/torch-0.4.0-cp35-cp35m-linux_x86_64.whl torchvision && \
-    python -m pip install ${PIP_OPTS} --no-cache-dir tensorflow==1.8.0 && \
+    python -m pip install ${PIP_OPTS} --no-cache-dir torchvision && \
+    python -m pip install ${PIP_OPTS} --no-cache-dir tensorflow==1.9.0 && \
     python -m pip install ${PIP_OPTS} --no-cache-dir rpy2 && \
     rm -rf /root/.cache
 
@@ -104,8 +104,9 @@ RUN pip install ${PIP_OPTS} jupyterlab jupyter_nbextensions_configurator jupyter
 # install other frequently updated libraries
 RUN python -m pip install ${PIP_OPTS} \
         git+https://github.com/thu-ml/zhusuan.git \
-        git+https://github.com/korepwx/tfsnippet.git \
-        git+https://github.com/korepwx/mltoolkit.git \
+        git+https://github.com/haowen-xu/tfsnippet.git \
+        git+https://github.com/haowen-xu/mltoolkit.git \
+        git+https://github.com/haowen-xu/mlstorage.git \
         git+https://github.com/facebookresearch/visdom.git
 
 CMD ["/bin/bash"]
