@@ -27,31 +27,12 @@ RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timez
     DEBIAN_FRONTEND=noninteractive apt-get -y update && \
     DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        apt-utils \
-        apt-transport-https \
-        lsb-release \
-        libssl-dev \
-        openssl \
-        libcurl4-openssl-dev \
-        libnlopt-dev \
-        libpq-dev \
-        libffi-dev \
-        zlib1g-dev \
-        gnupg \
-        dirmngr \
-        software-properties-common \
-        build-essential \
-        ca-certificates \
-        wget \
-        git \
-        mercurial \
-        vim \
-        locales \
-        language-pack-en \
-        tzdata \
-        ssh \
-        libcairo-dev \
-        libedit-dev \
+        apt-utils apt-transport-https lsb-release openssl gnupg dirmngr software-properties-common \
+        build-essential ca-certificates wget git mercurial \
+        locales language-pack-en tzdata vim ssh \
+        libssl-dev zlib1g-dev libncurses5-dev libncursesw5-dev libreadline-dev libsqlite3-dev \
+        libgdbm-dev libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev tk-dev \
+        libnlopt-dev libpq-dev libffi-dev libcairo-dev libedit-dev \
     && \
     add-apt-repository "deb ${CRAN_MIRROR}/bin/linux/ubuntu $(lsb_release -c -s)/" && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9 && \
@@ -64,7 +45,7 @@ RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timez
         cd Python-${PYTHON_VERSION} && \
         ./configure --enable-optimizations && \
         make -j8 && \
-        make install && \
+        make altinstall && \
         rm /tmp/Python-${PYTHON_VERSION}.tgz && \
         rm -rf /tmp/Python-${PYTHON_VERSION} && \
     ln -sf /usr/local/bin/python3.6 /usr/bin/python && \
