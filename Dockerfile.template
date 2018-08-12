@@ -1,10 +1,11 @@
-FROM {% if gpu %}nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04{% else %}ubuntu:16.04{% endif %}
+FROM {% if gpu %}nvidia/cuda:9.0-cudnn7-devel-ubuntu18.04{% else %}ubuntu:16.04{% endif %}
 
-MAINTAINER Haowen Xu <public@korepwx.com>
+MAINTAINER Haowen Xu <haowen.xu@outlook.com>
 
 ARG UBUNTU_MIRROR=archive.ubuntu.com
 ARG CRAN_MIRROR=https://cloud.r-project.org
-ARG PIP_OPTS=
+ARG PYTHON_VERSION=3.6.6
+ARG PIP_OPTS=""
 ARG TZ=Asia/Shanghai
 
 ENV LANG=en_US.UTF-8
@@ -28,16 +29,16 @@ RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timez
         apt-utils \
         apt-transport-https \
         lsb-release \
+        libssl-dev \
+        openssl \
         libcurl4-openssl-dev \
         libnlopt-dev \
+        libpq-dev \
+        libffi-dev \
+        zlib1g-dev \
         gnupg \
         dirmngr \
         software-properties-common \
-    && \
-    add-apt-repository "deb ${CRAN_MIRROR}/bin/linux/ubuntu $(lsb_release -c -s)/" && \
-    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9 && \
-    DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         build-essential \
         ca-certificates \
         wget \
@@ -50,11 +51,21 @@ RUN echo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timez
         ssh \
         libcairo-dev \
         libedit-dev \
-        python3 python3-dev python3-pip \
+    && \
+    add-apt-repository "deb ${CRAN_MIRROR}/bin/linux/ubuntu $(lsb_release -c -s)/" && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9 && \
+    DEBIAN_FRONTEND=noninteractive apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         r-base r-base-dev \
     && \
-    ln -sf /usr/bin/python3 /usr/bin/python && \
-    ln -sf /usr/bin/pip3 /usr/bin/pip && \
+    wget -O /tmp/Python-${PYTHON_VERSION}.tgz https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz  && \
+        cd /tmp && tar -xzvf Python-${PYTHON_VERSION}.tgz && \
+        cd Python-${PYTHON_VERSION} && \
+        ./configure --enable-optimizations && \
+        make -j8 && \
+        make install && \
+    ln -sf /usr/local/bin/python3.6 /usr/bin/python && \
+    ln -sf /usr/local/bin/pip3.6 /usr/bin/pip && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
