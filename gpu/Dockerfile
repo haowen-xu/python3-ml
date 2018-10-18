@@ -78,14 +78,15 @@ RUN R --version && \
     R -e 'install.packages(sub("(.+)\\\\n","\\1", scan("/tmp/rpacks.txt", "character")), repos="'"${CRAN_MIRROR}"'")' && \
     rm /tmp/rpacks.txt
 
-# Force invalidate the cache layer
-ARG CACHEBUST=1
-
 # Install Jupyterlab and other Jupyter extensions
+ARG JUPYTER_BUILD_VERSION=1
 RUN pip install ${PIP_OPTS} jupyterlab jupyter_nbextensions_configurator jupyter_contrib_nbextensions && \
     jupyter contrib nbextension install --sys-prefix && \
     jupyter nbextensions_configurator enable --sys-prefix && \
     jupyter serverextension enable --py jupyterlab --sys-prefix
+
+# Force invalidate the cache layer
+ARG CACHEBUST=1
 
 # install other frequently updated libraries
 RUN python -m pip install ${PIP_OPTS} \
