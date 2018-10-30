@@ -1,6 +1,8 @@
 Python3 Machine Learning Environment
 ====================================
 
+**THIS PROJECT HAS BEEN DEPRECEATED!!!  See its replacement `ML Runtime <https://github.com/haowen-xu/docker-ml-runtime>`_.**
+
 .. image:: https://travis-ci.org/haowen-xu/python3-ml.svg?branch=master
     :target: https://travis-ci.org/haowen-xu/python3-ml
 
